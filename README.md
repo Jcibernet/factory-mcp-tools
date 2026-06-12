@@ -1,3 +1,13 @@
+```
+   ███████╗ █████╗  ██████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+   ██╔════╝██╔══██╗██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+   █████╗  ███████║██║        ██║   ██║   ██║██████╔╝ ╚████╔╝
+   ██╔══╝  ██╔══██║██║        ██║   ██║   ██║██╔══██╗  ╚██╔╝
+   ██║     ██║  ██║╚██████╗   ██║   ╚██████╔╝██║  ██║   ██║
+   ╚═╝     ╚═╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝
+        m c p   t o o l s   ·   MCPs on-demand para Droid
+```
+
 # factory-mcp-tools
 
 > Gestión on-demand de MCPs para [Factory Droid](https://factory.ai) — mantené el budget de contexto bajo control habilitando MCPs sólo cuando los necesitás.
