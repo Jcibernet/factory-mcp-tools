@@ -1,87 +1,87 @@
 # factory-mcp-tools
 
-> On-demand MCP management for [Factory Droid](https://factory.ai) — keep your context budget lean by enabling MCPs only when you need them.
+> Gestión on-demand de MCPs para [Factory Droid](https://factory.ai) — mantené el budget de contexto bajo control habilitando MCPs sólo cuando los necesitás.
 
-A small toolkit that turns Factory's MCP roster into a **pay-as-you-go** resource instead of an always-on tax on your context window.
+Un toolkit chiquito que convierte el roster de MCPs de Factory en un recurso **pay-as-you-go**, en lugar de un impuesto permanente sobre tu ventana de contexto.
 
-Includes:
+Incluye:
 
-- **`toggle-mcp.sh`** — list / enable / disable MCP servers in `~/.factory/mcp.json` with backups and token-cost estimates.
-- **`mcp-orchestrator` skill** — a Factory skill that teaches Droid how to detect when an MCP would help, check if it's enabled, fall back to CLI when possible, and tell you exactly how to bring an MCP online (`toggle-mcp.sh enable <name>` + `droid -r`).
+- **`toggle-mcp.sh`** — list / enable / disable de servidores MCP en `~/.factory/mcp.json` con backups y estimación de costo en tokens.
+- **Skill `mcp-orchestrator`** — una skill de Factory que le enseña a Droid a detectar cuándo un MCP ayudaría, chequear si está habilitado, hacer fallback al CLI cuando es posible, y decirte exactamente cómo levantar un MCP (`toggle-mcp.sh enable <name>` + `droid -r`).
 
 ---
 
-## Why?
+## ¿Por qué?
 
-By default, every MCP server you configure in `~/.factory/mcp.json` is loaded into the session at startup. Each one costs context tokens for its tool schemas:
+Por default, cada servidor MCP que configurás en `~/.factory/mcp.json` se carga en la sesión al startup. Cada uno cuesta tokens de contexto por el schema de sus tools:
 
-| MCP | Approx tokens |
+| MCP | Tokens aprox |
 |---|---|
-| playwright | ~3,500 |
-| docker | ~2,800 |
-| github | ~2,000 |
-| neon-admin | ~1,500 |
-| notion | ~1,500 |
-| linear | ~1,200 |
-| sentry | ~1,000 |
-| postgres-* | ~80 each |
+| playwright | ~3.500 |
+| docker | ~2.800 |
+| github | ~2.000 |
+| neon-admin | ~1.500 |
+| notion | ~1.500 |
+| linear | ~1.200 |
+| sentry | ~1.000 |
+| postgres-* | ~80 cada uno |
 
-If you have 8–10 MCPs configured "just in case", that's easily **10–15k tokens** of context gone before you write a single prompt. Most sessions only need 1–2 of them.
+Si tenés 8-10 MCPs configurados "por las dudas", son fácil **10-15k tokens** de contexto perdidos antes de escribir un solo prompt. La mayoría de las sesiones sólo necesitan 1-2 de ellos.
 
-This toolkit lets you keep MCPs **configured but disabled**, and bring them online only for the task at hand.
+Este toolkit te deja tener los MCPs **configurados pero deshabilitados**, y traerlos online sólo para la tarea del momento.
 
 ---
 
-## Install
+## Instalación
 
 ```bash
 git clone https://github.com/Jcibernet/factory-mcp-tools.git
 cd factory-mcp-tools
 
-# 1) Install the toggle script
+# 1) Instalar el script de toggle
 mkdir -p ~/.factory/bin
 cp bin/toggle-mcp.sh ~/.factory/bin/
 chmod +x ~/.factory/bin/toggle-mcp.sh
 
-# 2) (Optional) install the skill globally
+# 2) (Opcional) instalar la skill globalmente
 mkdir -p ~/.factory/skills/mcp-orchestrator
 cp skills/mcp-orchestrator/SKILL.md ~/.factory/skills/mcp-orchestrator/
 
-# 3) Add ~/.factory/bin to PATH (optional but recommended)
-echo 'export PATH="$HOME/.factory/bin:$PATH"' >> ~/.bashrc   # or ~/.zshrc
+# 3) Agregar ~/.factory/bin al PATH (opcional pero recomendado)
+echo 'export PATH="$HOME/.factory/bin:$PATH"' >> ~/.bashrc   # o ~/.zshrc
 ```
 
 ---
 
-## Usage
+## Uso
 
 ```bash
-# Inspect
-toggle-mcp.sh list                       # all MCPs + enabled/disabled + type
-toggle-mcp.sh status                     # enabled set + estimated context cost
+# Inspeccionar
+toggle-mcp.sh list                       # todos los MCPs + enabled/disabled + tipo
+toggle-mcp.sh status                     # set habilitado + costo estimado de contexto
 
-# Toggle (one or many)
+# Toggle (uno o varios)
 toggle-mcp.sh enable docker
 toggle-mcp.sh disable playwright notion linear
 toggle-mcp.sh on docker                  # alias
 toggle-mcp.sh off playwright             # alias
 ```
 
-Each toggle makes a timestamped backup of `~/.factory/mcp.json` at `~/.factory/mcp.json.bak-<epoch>` before writing.
+Cada toggle hace un backup con timestamp de `~/.factory/mcp.json` en `~/.factory/mcp.json.bak-<epoch>` antes de escribir.
 
-### Apply changes
+### Aplicar los cambios
 
-MCPs are loaded at Droid CLI startup, so toggles take effect on the **next** session:
+Los MCPs se cargan al startup del CLI de Droid, así que los toggles aplican en la **próxima** sesión:
 
 ```bash
 toggle-mcp.sh enable docker
-exit          # exit the current droid session
-droid -r      # resume the same session with the new MCP set loaded
+exit          # salir de la sesión actual de droid
+droid -r      # reanudar la misma sesión con el nuevo set de MCPs cargados
 ```
 
-Session state (messages, specs, tool history) is preserved by Droid, so the restart-and-resume cycle is non-destructive.
+El estado de la sesión (mensajes, specs, historial de tools) lo persiste Droid, así que el ciclo restart-and-resume es no-destructivo.
 
-### Example output
+### Output de ejemplo
 
 ```
 $ toggle-mcp.sh status
@@ -92,37 +92,37 @@ Estimated context cost of enabled MCPs: ~3660 tokens
 
 ---
 
-## The `mcp-orchestrator` skill
+## La skill `mcp-orchestrator`
 
-A Factory skill that teaches Droid the **policy** around on-demand MCPs.
+Una skill de Factory que le enseña a Droid la **política** alrededor de los MCPs on-demand.
 
-What it does, in plain English:
+Qué hace, en castellano llano:
 
-1. Detects when a user request would benefit from an MCP (e.g. "list my containers" → docker).
-2. Runs `toggle-mcp.sh status` to see what's currently loaded.
-3. If the MCP is already enabled → uses it.
-4. If disabled but a CLI fallback is good enough → uses the CLI silently (e.g. `docker ps` via Execute).
-5. If disabled and the fallback is poor → prints the exact toggle + restart + resume commands and stops.
-6. Never edits `mcp.json` directly (always via `toggle-mcp.sh` so backups happen).
-7. Never claims a toggle takes effect mid-session.
+1. Detecta cuando un pedido del usuario se beneficiaría de un MCP (ej. "listame mis containers" → docker).
+2. Corre `toggle-mcp.sh status` para ver qué está cargado actualmente.
+3. Si el MCP ya está habilitado → lo usa.
+4. Si está deshabilitado pero hay un fallback de CLI lo suficientemente bueno → usa el CLI silenciosamente (ej. `docker ps` via Execute).
+5. Si está deshabilitado y el fallback es pobre → imprime el comando exacto de toggle + restart + resume y se detiene.
+6. Nunca edita `mcp.json` directamente (siempre vía `toggle-mcp.sh` para que se generen los backups).
+7. Nunca afirma que un toggle aplica en la sesión actual.
 
-Install:
+Instalar:
 
 ```bash
 mkdir -p ~/.factory/skills/mcp-orchestrator
 cp skills/mcp-orchestrator/SKILL.md ~/.factory/skills/mcp-orchestrator/
 ```
 
-The skill becomes available in your next Droid session and is auto-invoked when relevant.
+La skill queda disponible en tu próxima sesión de Droid y se auto-invoca cuando aplica.
 
 ---
 
-## How `toggle-mcp.sh` decides token costs
+## Cómo decide los costos en tokens `toggle-mcp.sh`
 
-The estimates are intentionally rough — they live as a static table inside the script. They're meant to give you a "this is roughly 3.5k vs 80" sense, not an exact budget. Adjust the table to your own measurements if you care about precision.
+Las estimaciones son intencionalmente aproximadas — viven como una tabla estática dentro del script. La idea es darte un orden de magnitud "esto es ~3.5k vs 80", no un budget exacto. Ajustá la tabla a tus propias mediciones si te importa la precisión.
 
 ```bash
-# inside toggle-mcp.sh
+# dentro de toggle-mcp.sh
 declare -A TOKENS=(
   [playwright]=3500
   [docker]=2800
@@ -133,22 +133,22 @@ declare -A TOKENS=(
 
 ---
 
-## Companion tool
+## Herramienta complementaria
 
-If you mainly use Playwright MCP for **one-shot visual debugging** (screenshot + console + network + a11y + perf), check out [**visual-debug**](https://github.com/Jcibernet/visual-debug) — a single-file CLI that gives an AI agent the same browser visibility with **zero MCP context cost**. Pair the two:
+Si principalmente usás Playwright MCP para **debug visual one-shot** (screenshot + console + network + a11y + perf), revisá [**visual-debug**](https://github.com/Jcibernet/visual-debug) — un CLI de un solo archivo que le da al agente la misma visibilidad del navegador con **cero costo de contexto MCP**. Combinalos:
 
-- Keep Playwright MCP **disabled** by default.
-- For one-shot inspection: `visual-debug http://localhost:3000` via Execute.
-- Only enable Playwright MCP when you need multi-step interactive flows.
-
----
-
-## Contributing
-
-PRs welcome. Keep the toggle script POSIX-leaning bash + Python (already installed everywhere Droid runs). Keep the skill prompt under 200 lines.
+- Mantené Playwright MCP **deshabilitado** por default.
+- Para inspección one-shot: `visual-debug http://localhost:3000` via Execute.
+- Sólo habilitá Playwright MCP cuando necesites flujos interactivos multi-step.
 
 ---
 
-## License
+## Contribuir
+
+PRs bienvenidas. Mantené el script de toggle como bash POSIX-leaning + Python (ya viene instalado en todo lugar donde corre Droid). Mantené el prompt de la skill por debajo de las 200 líneas.
+
+---
+
+## Licencia
 
 MIT © Juan Cibernet
