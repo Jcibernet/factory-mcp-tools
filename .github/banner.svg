@@ -1,45 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="260" viewBox="0 0 900 260" role="img" aria-label="factory-mcp-tools">
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300" role="img" aria-label="factory-mcp-tools">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#0b1020"/>
-      <stop offset="1" stop-color="#0a0e1a"/>
+      <stop offset="0" stop-color="#05030f"/>
+      <stop offset="0.5" stop-color="#0a0820"/>
+      <stop offset="1" stop-color="#05030f"/>
     </linearGradient>
-    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#7aa2ff"/>
-      <stop offset="0.5" stop-color="#4f7cff"/>
-      <stop offset="1" stop-color="#2d5bff"/>
+    <linearGradient id="neon" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#aee3ff"/>
+      <stop offset="0.5" stop-color="#3da9ff"/>
+      <stop offset="1" stop-color="#1f6bff"/>
     </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
-      <feDropShadow dx="0" dy="3" stdDeviation="0" flood-color="#1b2a66" flood-opacity="1"/>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <filter id="glowMag" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="#000000" opacity="0.16"/>
+    </pattern>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#10204a" stroke-width="1" opacity="0.5"/>
+    </pattern>
   </defs>
 
-  <rect width="900" height="260" rx="16" fill="url(#bg)"/>
-  <rect x="1" y="1" width="898" height="258" rx="15" fill="none" stroke="#1c2747" stroke-width="2"/>
+  <rect width="900" height="300" rx="18" fill="url(#bg)"/>
+  <rect x="0" y="0" width="900" height="300" rx="18" fill="url(#grid)"/>
 
-  <g fill="#16203c">
-    <rect x="40" y="40" width="6" height="6"/>
-    <rect x="60" y="40" width="6" height="6"/>
-    <rect x="820" y="210" width="6" height="6"/>
-    <rect x="840" y="210" width="6" height="6"/>
-    <rect x="40" y="210" width="6" height="6"/>
-    <rect x="840" y="40" width="6" height="6"/>
+  <rect x="6" y="6" width="888" height="288" rx="14" fill="none" stroke="#1f6bff" stroke-width="3" opacity="0.9" filter="url(#glow)"/>
+  <rect x="14" y="14" width="872" height="272" rx="10" fill="none" stroke="#ff3df0" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- HUD -->
+  <text x="34" y="44" font-family="'Courier New', monospace" font-size="15" font-weight="700" letter-spacing="2" fill="#ff3df0" filter="url(#glowMag)">PLAYER 1</text>
+  <text x="34" y="64" font-family="'Courier New', monospace" font-size="13" font-weight="700" letter-spacing="2" fill="#aee3ff">MCP x9</text>
+  <text x="866" y="44" text-anchor="end" font-family="'Courier New', monospace" font-size="15" font-weight="700" letter-spacing="2" fill="#ffd23d">TOKENS</text>
+  <text x="866" y="64" text-anchor="end" font-family="'Courier New', monospace" font-size="13" font-weight="700" letter-spacing="2" fill="#3dff9e">-10000</text>
+
+  <!-- coins (pixel) -->
+  <g fill="#ffd23d" filter="url(#glowMag)">
+    <g transform="translate(412,32)"><rect x="2" y="0" width="8" height="2"/><rect x="0" y="2" width="12" height="2"/><rect x="0" y="4" width="12" height="8"/><rect x="0" y="12" width="12" height="2"/><rect x="2" y="14" width="8" height="2"/><rect x="5" y="4" width="2" height="8" fill="#a8730a"/></g>
+    <g transform="translate(440,32)"><rect x="2" y="0" width="8" height="2"/><rect x="0" y="2" width="12" height="2"/><rect x="0" y="4" width="12" height="8"/><rect x="0" y="12" width="12" height="2"/><rect x="2" y="14" width="8" height="2"/><rect x="5" y="4" width="2" height="8" fill="#a8730a"/></g>
   </g>
 
-  <text x="50%" y="118" text-anchor="middle"
+  <!-- TITLE -->
+  <text x="450" y="156" text-anchor="middle"
         font-family="'Courier New', ui-monospace, monospace"
-        font-size="72" font-weight="700" letter-spacing="1"
-        fill="url(#blue)" filter="url(#shadow)">factory-mcp-tools</text>
+        font-size="56" font-weight="800" letter-spacing="1"
+        fill="url(#neon)" stroke="#0a1840" stroke-width="1.5" filter="url(#glow)">FACTORY-MCP-TOOLS</text>
 
-  <rect x="200" y="152" width="500" height="3" rx="1.5" fill="#2d5bff" opacity="0.6"/>
+  <!-- subtitle plate -->
+  <rect x="270" y="180" width="360" height="30" rx="4" fill="#0c1840" stroke="#1f6bff" stroke-width="1.5" opacity="0.85"/>
+  <text x="450" y="201" text-anchor="middle"
+        font-family="'Courier New', monospace" font-size="16" font-weight="700" letter-spacing="3"
+        fill="#aee3ff">MCPs ON-DEMAND PARA DROID</text>
 
-  <text x="50%" y="190" text-anchor="middle"
-        font-family="ui-monospace, 'SF Mono', Menlo, monospace"
-        font-size="20" font-weight="500" letter-spacing="3"
-        fill="#9fb4e6">MCPs on-demand para Droid</text>
+  <!-- INSERT COIN -->
+  <text x="450" y="242" text-anchor="middle"
+        font-family="'Courier New', monospace" font-size="15" font-weight="700" letter-spacing="5"
+        fill="#ffd23d" filter="url(#glowMag)">&#9654; INSERT COIN &#9664;</text>
 
-  <text x="50%" y="222" text-anchor="middle"
-        font-family="ui-monospace, 'SF Mono', Menlo, monospace"
-        font-size="14" letter-spacing="1.5"
-        fill="#5b6b94">toggle &#183; ahorra contexto &#183; restart + resume</text>
+  <text x="450" y="270" text-anchor="middle"
+        font-family="'Courier New', monospace" font-size="12" letter-spacing="2"
+        fill="#5a6ea8">TOGGLE &#183; AHORRA CONTEXTO &#183; RESTART + RESUME</text>
+
+  <rect width="900" height="300" rx="18" fill="url(#scan)"/>
 </svg>

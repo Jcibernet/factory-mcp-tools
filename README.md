@@ -3,10 +3,10 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2d5bff?style=flat-square" alt="license"></a>
-  <img src="https://img.shields.io/badge/Factory-Droid-2d5bff?style=flat-square" alt="factory droid">
-  <img src="https://img.shields.io/badge/saves-~10k_tokens-2d5bff?style=flat-square" alt="saves tokens">
-  <img src="https://img.shields.io/badge/on--demand-MCPs-2d5bff?style=flat-square" alt="on demand">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-1f6bff?style=for-the-badge&labelColor=05030f" alt="license"></a>
+  <img src="https://img.shields.io/badge/FACTORY-DROID-1f6bff?style=for-the-badge&labelColor=05030f" alt="factory droid">
+  <img src="https://img.shields.io/badge/SAVES-~10K_TOKENS-ffd23d?style=for-the-badge&labelColor=05030f" alt="saves tokens">
+  <img src="https://img.shields.io/badge/MCPs-ON--DEMAND-ff3df0?style=for-the-badge&labelColor=05030f" alt="on demand">
 </p>
 
 > Gestión on-demand de MCPs para [Factory Droid](https://factory.ai) — mantené el budget de contexto bajo control habilitando MCPs sólo cuando los necesitás.
