@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/banner.svg" alt="factory-mcp-tools" width="100%">
+  <img src=".github/banner.png" alt="factory-mcp-tools" width="100%">
 </p>
 
 <p align="center">
