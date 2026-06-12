@@ -1,14 +1,13 @@
-```
-   ███████╗ █████╗  ██████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
-   ██╔════╝██╔══██╗██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
-   █████╗  ███████║██║        ██║   ██║   ██║██████╔╝ ╚████╔╝
-   ██╔══╝  ██╔══██║██║        ██║   ██║   ██║██╔══██╗  ╚██╔╝
-   ██║     ██║  ██║╚██████╗   ██║   ╚██████╔╝██║  ██║   ██║
-   ╚═╝     ╚═╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝
-        m c p   t o o l s   ·   MCPs on-demand para Droid
-```
+<p align="center">
+  <img src=".github/banner.svg" alt="factory-mcp-tools" width="100%">
+</p>
 
-# factory-mcp-tools
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2d5bff?style=flat-square" alt="license"></a>
+  <img src="https://img.shields.io/badge/Factory-Droid-2d5bff?style=flat-square" alt="factory droid">
+  <img src="https://img.shields.io/badge/saves-~10k_tokens-2d5bff?style=flat-square" alt="saves tokens">
+  <img src="https://img.shields.io/badge/on--demand-MCPs-2d5bff?style=flat-square" alt="on demand">
+</p>
 
 > Gestión on-demand de MCPs para [Factory Droid](https://factory.ai) — mantené el budget de contexto bajo control habilitando MCPs sólo cuando los necesitás.
 
